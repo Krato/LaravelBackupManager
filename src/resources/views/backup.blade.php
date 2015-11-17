@@ -1,15 +1,15 @@
 @extends('admin.layout')
 
 @section('content-header')
-	<section class="content-header">
-	  <h1>
-	    {{ trans('backup.backup') }}
-	  </h1>
-	  <ol class="breadcrumb">
-	    <li><a href="{{ url('admin/dashboard') }}">Admin</a></li>
-	    <li class="active">{{ trans('backup.backup') }}</li>
-	  </ol>
-	</section>
+    <section class="content-header">
+      <h1>
+        {{ trans('backup.backup') }}
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="{{ url('admin') }}">Admin</a></li>
+        <li class="active">{{ trans('backup.backup') }}</li>
+      </ol>
+    </section>
 @endsection
 
 @section('content')
@@ -49,10 +49,10 @@
 
     </div><!-- /.box-body -->
   </div><!-- /.box -->
-
+    <input type="hidden" name="_token" value="{{ csrf_token() }}">
 @endsection
 
-@section('scripts')
+@section('custom_js')
 <script>
   jQuery(document).ready(function($) {
 
@@ -60,6 +60,8 @@
     $("#create-new-backup-button").click(function(e) {
         e.preventDefault();
         var create_backup_url = $(this).attr('href');
+
+        console.log(create_backup_url)
         // Create a new instance of ladda for the specified button
         var l = Ladda.create( document.querySelector( '#create-new-backup-button' ) );
 
@@ -75,6 +77,9 @@
         $.ajax({
                 url: create_backup_url,
                 type: 'PUT',
+                beforeSend: function (request){
+                    request.setRequestHeader("X-CSRF-TOKEN", $('[name="_token"]').val());
+                },
                 success: function(result) {
                     l.setProgress( 0.9 );
                     // Show an alert with the result
@@ -114,6 +119,9 @@
             $.ajax({
                 url: delete_url,
                 type: 'DELETE',
+                beforeSend: function (request){
+                    request.setRequestHeader("X-CSRF-TOKEN", $('[name="_token"]').val());
+                },
                 success: function(result) {
                     // Show an alert with the result
                     new PNotify({

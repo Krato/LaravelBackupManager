@@ -14,7 +14,7 @@ Laravel 5 admin interface for manage backups.
 Via Composer
 
 ``` bash
-$ composer require infinety-es/laravelBackupManager
+$ composer require infinety-es/laravelbackupmanager
 ```
 
 Then add the service providers to your config/app.php file:

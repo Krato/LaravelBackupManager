@@ -1,6 +1,6 @@
 <?php
 
-namespace Dick\BackupManager;
+namespace Infinety\BackupManager;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Routing\Router;

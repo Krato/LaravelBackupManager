@@ -1,7 +1,7 @@
-<?php namespace Dick\BackupManager\Http\Controllers;
+<?php namespace Infinety\BackupManager\Http\Controllers;
 
-use App\Http\Requests;
-use App\Http\Controllers\Controller;
+use starter\Http\Requests;
+use starter\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Auth;
 use App;
@@ -23,7 +23,7 @@ class BackupController extends Controller {
 
 	public function index()
 	{
-		$disk = Storage::disk(config('dick.backupmanager.disk'));
+		$disk = Storage::disk(config('infinety.backupmanager.disk'));
 		$files = $disk->files('backups');
 		$this->data['backups'] = [];
 
@@ -73,7 +73,7 @@ class BackupController extends Controller {
 	        abort(403, 'Unauthorized access - you do not have the necessary permission to download backups.');
 	    }
 
-		$disk = Storage::disk(config('dick.backupmanager.disk'));
+		$disk = Storage::disk(config('infinety.backupmanager.disk'));
 
 		if ($disk->exists('backups/'.$file_name)) {
 			return response()->download(storage_path('backups/'.$file_name));
@@ -93,7 +93,7 @@ class BackupController extends Controller {
 	        abort(403, 'Unauthorized access - you do not have the necessary permission to delete backups.');
 	    }
 
-		$disk = Storage::disk(config('dick.backupmanager.disk'));
+		$disk = Storage::disk(config('infinety.backupmanager.disk'));
 
 		if ($disk->exists('backups/'.$file_name)) {
 			$disk->delete('backups/'.$file_name);

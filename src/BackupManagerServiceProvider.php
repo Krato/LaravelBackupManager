@@ -23,7 +23,7 @@ class BackupManagerServiceProvider extends ServiceProvider
     {
         // use the vendor configuration file as fallback
         $this->mergeConfigFrom(
-            __DIR__.'/config/config.php', 'dick.backupmanager'
+            __DIR__.'/config/config.php', 'infinety.backupmanager'
         );
 
         // use this if your package has views
@@ -31,7 +31,7 @@ class BackupManagerServiceProvider extends ServiceProvider
 
         // use this if your package needs a config file
         $this->publishes([
-                __DIR__.'/config/config.php' => config_path('dick/backupmanager.php'),
+                __DIR__.'/config/config.php' => config_path('infinety/backupmanager.php'),
         ], 'config');
     }
 
@@ -43,7 +43,7 @@ class BackupManagerServiceProvider extends ServiceProvider
      */
     public function setupRoutes(Router $router)
     {
-        $router->group(['namespace' => 'Dick\BackupManager\Http\Controllers'], function($router)
+        $router->group(['namespace' => 'Infinety\BackupManager\Http\Controllers'], function($router)
         {
             require __DIR__.'/Http/routes.php';
         });

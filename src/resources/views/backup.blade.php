@@ -31,7 +31,7 @@
         <tbody>
           @foreach ($backups as $k => $b)
           <tr>
-            <th scope="row">{{ $k+1 }}</th>
+            <td scope="row">{{ $k+1 }}</td>
             <td>{{ Carbon::createFromTimeStamp($b['last_modified'])->formatLocalized('%d %B %Y, %H:%M') }}</td>
             <td class="text-right">{{ round((int)$b['file_size']/1048576, 2).' MB' }}</td>
             <td>

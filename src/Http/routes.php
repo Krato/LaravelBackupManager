@@ -1,12 +1,11 @@
 <?php
 
-Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function()
-{
+Route::group(['prefix' => config('backupmanager.route-prefix'), 'middleware' => config('backupmanager.middleware')], function () {
 
-	// Backup
-	Route::get('backup', 'BackupController@index');
-	Route::put('backup/create', 'BackupController@create');
-	Route::get('backup/download/{file_name}', 'BackupController@download');
-	Route::delete('backup/delete/{file_name}', 'BackupController@delete');
+    // Backup Routes
+    Route::get('backup', ['as' => 'backup.index', 'uses' => 'BackupController@index']);
+    Route::post('backup/create', ['as' => 'backup.create', 'uses' => 'BackupController@create']);
+    Route::get('backup/download', ['as' => 'backup.download', 'uses' => 'BackupController@download']);
+    Route::delete('backup/delete', ['as' => 'backup.delete', 'uses' => 'BackupController@delete']);
 
 });

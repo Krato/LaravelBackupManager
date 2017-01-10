@@ -16,8 +16,6 @@ class BackupManagerServiceProvider extends ServiceProvider
 
     /**
      * Perform post-registration booting of services.
-     *
-     * @return void
      */
     public function boot()
     {
@@ -26,33 +24,44 @@ class BackupManagerServiceProvider extends ServiceProvider
             __DIR__.'/config/config.php', 'infinety.backupmanager'
         );
 
-        // use this if your package has views
         $this->loadViewsFrom(realpath(__DIR__.'/resources/views'), 'backupmanager');
+
+        $this->loadTranslationsFrom(realpath(__DIR__.'/resources/lang/'), 'backup');
+
+        /*
+         * Publish default views
+         */
+        $this->publishes([
+            realpath(__DIR__.'/resources/views') => $this->app->basePath().'/resources/views/vendor/infinety/backupmanager',
+        ], 'views');
+
+        /*
+         * Publishes Lang files
+         */
+        $this->publishes([
+            realpath(__DIR__.'/resources/lang') => $this->app->basePath().'/resources/lang',
+        ], 'lang');
 
         // use this if your package needs a config file
         $this->publishes([
-                __DIR__.'/config/config.php' => config_path('infinety/backupmanager.php'),
+                __DIR__.'/config/config.php' => config_path('backupmanager.php'),
         ], 'config');
     }
 
     /**
      * Define the routes for the application.
      *
-     * @param  \Illuminate\Routing\Router  $router
-     * @return void
+     * @param \Illuminate\Routing\Router $router
      */
     public function setupRoutes(Router $router)
     {
-        $router->group(['namespace' => 'Infinety\BackupManager\Http\Controllers'], function($router)
-        {
+        $router->group(['namespace' => 'Infinety\BackupManager\Http\Controllers'], function ($router) {
             require __DIR__.'/Http/routes.php';
         });
     }
 
     /**
      * Register any package services.
-     *
-     * @return void
      */
     public function register()
     {
@@ -67,7 +76,7 @@ class BackupManagerServiceProvider extends ServiceProvider
 
     private function registerBackupManager()
     {
-        $this->app->bind('backupmanager',function($app){
+        $this->app->bind('backupmanager', function ($app) {
             return new BackupManager($app);
         });
     }

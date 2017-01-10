@@ -11,14 +11,18 @@
     "license": "MIT",
     "authors": [
         {
+            "name": "Spatie",
+            "email": "info@spatie.be"
+        },
+        {
             "name": "Infinety",
             "email": "hello@infinety.es"
         }
     ],
     "require": {
         "illuminate/support": "~5.1",
-        "php" : ">=5.3.0",
-        "spatie/laravel-backup": "^2.4"
+        "php" : ">=7.0.0",
+        "spatie/laravel-backup": "4.*"
     },
     "require-dev": {
         "phpunit/phpunit" : "4.*",
@@ -41,5 +45,6 @@
         "branch-alias": {
             "dev-master": "1.0-dev"
         }
-    }
+    },
+    "minimum-stability": "stable"
 }

@@ -20,12 +20,11 @@
         }
     ],
     "require": {
-        "illuminate/support": "~5.1",
         "php" : ">=7.0.0",
-        "spatie/laravel-backup": "4.*"
+        "spatie/laravel-backup": "5.*"
     },
     "require-dev": {
-        "phpunit/phpunit" : "4.*",
+        "phpunit/phpunit" : "~6.0",
         "scrutinizer/ocular": "~1.1"
     },
     "autoload": {

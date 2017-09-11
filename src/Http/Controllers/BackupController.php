@@ -3,8 +3,8 @@
 namespace Infinety\BackupManager\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Storage;
 use Artisan;
+use Storage;
 
 class BackupController extends Controller
 {
@@ -13,14 +13,17 @@ class BackupController extends Controller
         $this->middleware(config('backupmanager.middleware'));
     }
 
+    /**
+     * @return mixed
+     */
     public function index()
     {
         $disk = Storage::disk(config('backupmanager.disk'));
         $files = $disk->files('backups');
         $this->data['backups'] = [];
 
-        foreach (config('laravel-backup.backup.destination.disks') as $disk_name) {
-            $disk = Storage::disk($disk_name);
+        foreach (config('backup.backup.destination.disks') as $diskName) {
+            $disk = Storage::disk($diskName);
             $adapter = $disk->getDriver()->getAdapter();
             $files = $disk->allFiles();
             // make an array of backup files, with their filesize and creation date
@@ -28,13 +31,13 @@ class BackupController extends Controller
                 // only take the zip files into account
                 if (substr($f, -4) == '.zip' && $disk->exists($f)) {
                     $this->data['backups'][] = [
-                        'file_path' => $f,
-                        'file_name' => str_replace('backups/', '', $f),
-                        'file_size' => $disk->size($f),
+                        'file_path'     => $f,
+                        'file_name'     => str_replace('backups/', '', $f),
+                        'file_size'     => $disk->size($f),
                         'last_modified' => $disk->lastModified($f),
-                        'disk' => $disk_name,
-                        'download' => ($adapter instanceof \League\Flysystem\Adapter\Local) ? true : false,
-                        ];
+                        'disk'          => $disk_name,
+                        'download'      => ($adapter instanceof \League\Flysystem\Adapter\Local) ? true : false,
+                    ];
                 }
             }
         }
@@ -77,10 +80,10 @@ class BackupController extends Controller
             if ($disk->exists($file_name)) {
                 return response()->download($storage_path.$file_name);
             } else {
-                abort(404, trans('backpack::backup.backup_doesnt_exist'));
+                abort(404, trans('backup::backup.backup_doesnt_exist'));
             }
         } else {
-            abort(404, trans('backpack::backup.only_local_downloads_supported'));
+            abort(404, trans('backup::backup.only_local_downloads_supported'));
         }
     }
 
@@ -90,20 +93,20 @@ class BackupController extends Controller
     public function delete()
     {
         $disk = Storage::disk(\Request::input('disk'));
-        $file_name = \Request::get('file_name');
+        $fileName = \Request::get('file_name');
         $adapter = $disk->getDriver()->getAdapter();
 
         if ($adapter instanceof \League\Flysystem\Adapter\Local) {
             $storage_path = $disk->getDriver()->getAdapter()->getPathPrefix();
-            if ($disk->exists($file_name)) {
-                $disk->delete($file_name);
+            if ($disk->exists($fileName)) {
+                $disk->delete($fileName);
 
                 return 'success';
             } else {
-                abort(404, trans('backpack::backup.backup_doesnt_exist'));
+                abort(404, trans('backup::backup.backup_doesnt_exist'));
             }
         } else {
-            abort(404, trans('backpack::backup.only_local_downloads_supported'));
+            abort(404, trans('backup::backup.only_local_downloads_supported'));
         }
     }
 
@@ -117,13 +120,13 @@ class BackupController extends Controller
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    protected function firstViewThatExists($first_view, $second_view, $information = [])
+    protected function firstViewThatExists($firstView, $secondView, $information = [])
     {
         // load the first view if it exists, otherwise load the second one
-        if (view()->exists($first_view)) {
-            return view($first_view, $information);
+        if (view()->exists($firstView)) {
+            return view($firstView, $information);
         } else {
-            return view($second_view, $information);
+            return view($secondView, $information);
         }
     }
 }
